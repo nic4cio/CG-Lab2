@@ -26,12 +26,18 @@ left_side_keyboards = LoadMesh("LeftKeyboards.obj", GL_LINE_LOOP)
 left_side_benches = LoadMesh("LeftBenches.obj", GL_LINE_LOOP)
 left_side_cabinets = LoadMesh("LeftCabinets.obj", GL_TRIANGLES)
 
-rotationFan1 = 0
-rotationFan2 = 0
 fans = LoadMesh("Fans.obj", GL_LINE_LOOP)
 fans2 = LoadMesh("Fans2.obj", GL_LINE_LOOP)
 quadro = LoadMesh("Quadro.obj", GL_TRIANGLES)
+door = LoadMesh("Porta.obj", GL_TRIANGLES)
 camera = Camera()
+
+portaAberta = False
+portaAnimacao = False
+rotationPorta = 0
+rotationFan1 = 0
+rotationFan2 = 0
+
 
 def initialise():
     glClearColor(background_color[0], background_color[1], background_color[2], background_color[3])
@@ -70,6 +76,7 @@ def draw_world_axes():
 
 def display():
     global rotationFan1, rotationFan2
+    global rotationPorta, portaAnimacao
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     init_camera()
@@ -109,6 +116,29 @@ def display():
     glRotatef(rotationFan2, 0, 1, 0)
     fans.draw()
     glPopMatrix()
+
+    glPushMatrix()
+    glColor(1, 1, 0)
+    glTranslatef(2.68048, 0.345, -5.14363)
+
+    if portaAnimacao:
+        # Executa a animação da porta abrindo, ela vai de 0º a -90º
+        if portaAberta:
+            rotationPorta = rotationPorta - 1
+            if rotationPorta <= -90:
+                portaAnimacao = False
+        # Executa a animação da porta fechando, ela vai de -90º a 0º
+        else:
+            rotationPorta = rotationPorta + 1
+            if rotationPorta >= 0:
+                portaAnimacao = False
+
+        glRotatef(rotationPorta, 0, 1, 0)
+    elif portaAberta:
+        glRotatef(-90, 0, 1, 0)
+
+    door.draw()
+    glPopMatrix()
     
     rotationFan1 = (rotationFan1 + 2) % 360
     rotationFan2 = (rotationFan2 + 1) % 360
@@ -122,13 +152,17 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-        if event.type == KEYDOWN:
+        elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 pygame.mouse.set_visible(True)
                 pygame.event.set_grab(False)
-            if event.key == K_SPACE:
+            elif event.key == K_SPACE:
                 pygame.mouse.set_visible(False)
                 pygame.event.set_grab(True)
+            elif event.key == K_p:
+                portaAberta = not portaAberta
+                portaAnimacao = True
+
     display()
     pygame.display.flip()
 
