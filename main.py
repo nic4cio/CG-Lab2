@@ -26,6 +26,8 @@ left_side_keyboards = LoadMesh("LeftKeyboards.obj", GL_LINE_LOOP)
 left_side_benches = LoadMesh("LeftBenches.obj", GL_LINE_LOOP)
 left_side_cabinets = LoadMesh("LeftCabinets.obj", GL_TRIANGLES)
 
+rotationFan1 = 0
+rotationFan2 = 0
 fans = LoadMesh("Fans.obj", GL_LINE_LOOP)
 fans2 = LoadMesh("Fans2.obj", GL_LINE_LOOP)
 quadro = LoadMesh("Quadro.obj", GL_TRIANGLES)
@@ -67,42 +69,49 @@ def draw_world_axes():
 
 
 def display():
+    global rotationFan1, rotationFan2
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     init_camera()
+
     glPushMatrix()
-    # glTranslated(0, 1, -5)
-    # glTranslated(0, -2, 0)
     draw_world_axes()
     glPopMatrix()
 
     glPushMatrix()
-    glTranslatef(0, 0, 0)
     mesh.draw()
-    fans.draw()
-    fans2.draw()
+
     glColor(1, 0, 0)
     left_side_computers.draw()
     right_side_computers.draw()
+
     glColor(1, 0, 1)
     left_side_cabinets.draw()
     right_side_cabinets.draw()
+
     glColor(1, 1, 1)
     # left_side_keyboards.draw()
     # right_side_keyboards.draw()
     right_side_benches.draw()
     left_side_benches.draw()
+
     quadro.draw()
     glPopMatrix()
 
-    # sphere = gluNewQuadric()
-    # glColor(1, 0, 0)
-    # glPushMatrix()
-    # glTranslatef(1, 0, 0)
-    # glScalef(8, 8, 8)
-    # glTranslatef(0, 0.04, 0)
-    # glTranslatef(-0.06, 0, 0)
-    # gluSphere(sphere, 0.05, 10, 10)
-    # glPopMatrix()
+    glPushMatrix()
+    glTranslatef(0, 1.75, 0)
+    glRotatef(rotationFan1, 0, 1, 0)
+    fans.draw()
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslatef(0, 1.75, -3)
+    glRotatef(rotationFan2, 0, 1, 0)
+    fans.draw()
+    glPopMatrix()
+    
+    rotationFan1 = (rotationFan1 + 2) % 360
+    rotationFan2 = (rotationFan2 + 1) % 360
 
 
 done = False
