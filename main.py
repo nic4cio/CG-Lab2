@@ -30,11 +30,18 @@ fans = LoadMesh("assets/Fans.obj", GL_LINE_LOOP)
 fans2 = LoadMesh("assets/Fans2.obj", GL_LINE_LOOP)
 quadro = LoadMesh("assets/Quadro.obj", GL_TRIANGLES)
 door = LoadMesh("assets/Porta.obj", GL_TRIANGLES)
+window = LoadMesh("assets/Window.obj", GL_TRIANGLES)
+mesaProfessor = LoadMesh("assets/MesaProfessor.obj", GL_TRIANGLES)
 camera = Camera()
 
 portaAberta = False
 portaAnimacao = False
 rotationPorta = 0
+
+janelasAbertas = False
+janelasAnimacao = False
+rotationJanelas = 0
+
 rotationFan1 = 0
 rotationFan2 = 0
 
@@ -77,6 +84,7 @@ def draw_world_axes():
 def display():
     global rotationFan1, rotationFan2
     global rotationPorta, portaAnimacao
+    global rotationJanelas, janelasAnimacao
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     init_camera()
@@ -103,6 +111,7 @@ def display():
     left_side_benches.draw()
 
     quadro.draw()
+    mesaProfessor.draw()
     glPopMatrix()
 
     glPushMatrix()
@@ -139,6 +148,30 @@ def display():
 
     door.draw()
     glPopMatrix()
+
+
+    for janelaZ in [ -3.45, -2.3, -1.15, 0 ]:
+        glPushMatrix()
+        glColor(.2, .5, .66)
+        glTranslatef(-4, 1.5, janelaZ)
+        if janelasAnimacao:
+            # Executa a animação das janelas abrindo, ela vai de 0º a -45º
+            if janelasAbertas:
+                rotationJanelas = rotationJanelas - 1
+                if rotationJanelas <= -45:
+                    janelasAnimacao = False
+            # Executa a animação das janelas fechando, ela vai de -45º a 0º
+            else:
+                rotationJanelas = rotationJanelas + 1
+                if rotationJanelas >= 0:
+                    janelasAnimacao = False
+            
+            glRotatef(rotationJanelas, 0, 0, 1)
+        elif janelasAbertas:
+            glRotatef(-45, 0, 0, 1)
+
+        window.draw()
+        glPopMatrix()
     
     rotationFan1 = (rotationFan1 + 2) % 360
     rotationFan2 = (rotationFan2 + 1) % 360
@@ -162,6 +195,9 @@ while not done:
             elif event.key == K_p:
                 portaAberta = not portaAberta
                 portaAnimacao = True
+            elif event.key == K_j:
+                janelasAbertas = not janelasAbertas
+                janelasAnimacao = True
 
     display()
     pygame.display.flip()
