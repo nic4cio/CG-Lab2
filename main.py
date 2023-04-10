@@ -28,6 +28,7 @@ left_side_cabinets = LoadMesh("LeftCabinets.obj", GL_TRIANGLES)
 
 fans = LoadMesh("Fans.obj", GL_LINE_LOOP)
 fans2 = LoadMesh("Fans2.obj", GL_LINE_LOOP)
+quadro = LoadMesh("Quadro.obj", GL_TRIANGLES)
 camera = Camera()
 
 def initialise():
@@ -90,6 +91,7 @@ def display():
     # right_side_keyboards.draw()
     right_side_benches.draw()
     left_side_benches.draw()
+    quadro.draw()
     glPopMatrix()
 
     # sphere = gluNewQuadric()
