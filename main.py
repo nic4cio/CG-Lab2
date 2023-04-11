@@ -32,6 +32,7 @@ quadro = LoadMesh("assets/Quadro.obj", GL_TRIANGLES)
 door = LoadMesh("assets/Porta.obj", GL_TRIANGLES)
 window = LoadMesh("assets/Window.obj", GL_TRIANGLES)
 mesaProfessor = LoadMesh("assets/MesaProfessor.obj", GL_TRIANGLES)
+laptop = LoadMesh("assets/Laptop.obj", GL_TRIANGLES)
 camera = Camera()
 
 portaAberta = False
@@ -112,6 +113,9 @@ def display():
 
     quadro.draw()
     mesaProfessor.draw()
+
+    glColor(0.71, 0.494, 0.862)
+    laptop.draw()
     glPopMatrix()
 
     glPushMatrix()
