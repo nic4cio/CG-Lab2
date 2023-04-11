@@ -6,11 +6,12 @@
 sudo apt update
 sudo apt install python3-pip
 sudo apt install freeglut3-dev
-
-
-# pacotes
+```
+### Pacotes
+```
 pip3 install PyOpenGL PyOpenGL_accelerate pygame
 ```
+
 Para rodar, utilize o seguinte comando no terminal:
 ``` python3 main.py ```
 
