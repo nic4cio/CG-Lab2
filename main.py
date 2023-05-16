@@ -15,19 +15,19 @@ drawing_color = (1, 1, 1, 1)
 
 screen = pygame.display.set_mode((screen_width, screen_height), DOUBLEBUF | OPENGL)
 pygame.display.set_caption('Lab')
-mesh = LoadMesh("assets/Lab2.obj", GL_LINE_LOOP)
+mesh = LoadMesh("assets/Lab2.obj", GL_TRIANGLES)
 right_side_computers = LoadMesh("assets/RightComputers.obj", GL_TRIANGLES)
 right_side_keyboards = LoadMesh("assets/RightKeyboards.obj", GL_LINE_LOOP)
-right_side_benches = LoadMesh("assets/RightBenches.obj", GL_LINE_LOOP)
+right_side_benches = LoadMesh("assets/RightBenches.obj", GL_TRIANGLES)
 right_side_cabinets = LoadMesh("assets/RightCabinets.obj", GL_TRIANGLES)
 
 left_side_computers = LoadMesh("assets/LeftComputers.obj", GL_TRIANGLES)
 left_side_keyboards = LoadMesh("assets/LeftKeyboards.obj", GL_LINE_LOOP)
-left_side_benches = LoadMesh("assets/LeftBenches.obj", GL_LINE_LOOP)
+left_side_benches = LoadMesh("assets/LeftBenches.obj", GL_TRIANGLES)
 left_side_cabinets = LoadMesh("assets/LeftCabinets.obj", GL_TRIANGLES)
 
-fans = LoadMesh("assets/Fans.obj", GL_LINE_LOOP)
-fans2 = LoadMesh("assets/Fans2.obj", GL_LINE_LOOP)
+fans = LoadMesh("assets/Fans.obj", GL_TRIANGLES)
+fans2 = LoadMesh("assets/Fans2.obj", GL_TRIANGLES)
 quadro = LoadMesh("assets/Quadro.obj", GL_TRIANGLES)
 door = LoadMesh("assets/Porta.obj", GL_TRIANGLES)
 window = LoadMesh("assets/Window.obj", GL_TRIANGLES)
@@ -87,8 +87,32 @@ def display():
     global rotationPorta, portaAnimacao
     global rotationJanelas, janelasAnimacao
 
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glEnable(GL_LIGHT1)
+    glEnable(GL_COLOR_MATERIAL)
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     init_camera()
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  (0.1, 0.1, 0.1, 1.0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  (0.3, 0.3, 0.3, 1.0))
+    glLightfv(GL_LIGHT0, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_POSITION, (1.6, 1.5, 1.0, 2.0))
+
+    glLightfv(GL_LIGHT1, GL_AMBIENT,  (0.1, 0.1, 0.1, 1.0))
+    glLightfv(GL_LIGHT1, GL_DIFFUSE,  (0.3, 0.3, 0.3, 1.0))
+    glLightfv(GL_LIGHT1, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
+    glLightfv(GL_LIGHT1, GL_POSITION, (-1.6, 1.5, 2.0, 1.0))
+
+    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 0.25)) #amb1
+    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 1)) #dif2
+
+    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 0.25)) #amb1
+    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 1)) #dif3
+    
+    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 0.25)) #amb1
+    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 1)) #dif4
 
     glPushMatrix()
     draw_world_axes()
@@ -97,15 +121,17 @@ def display():
     glPushMatrix()
     mesh.draw()
 
-    glColor(1, 0, 0)
+    glColor(0.4, 0.4, 0.4)
+    # Define a reflectancia do material
+    glMaterialfv(GL_FRONT,GL_SPECULAR, (1.0, 1.0, 1.0, 1))
     left_side_computers.draw()
     right_side_computers.draw()
 
-    glColor(1, 0, 1)
+    glColor(0.4, 0.4, 0.4)
     left_side_cabinets.draw()
     right_side_cabinets.draw()
 
-    glColor(1, 1, 1)
+    glColor(0.85, 0.85, 0.85)
     # left_side_keyboards.draw()
     # right_side_keyboards.draw()
     right_side_benches.draw()
