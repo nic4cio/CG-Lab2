@@ -20,6 +20,7 @@ mesh = LoadMesh("assets/Lab2.obj", GL_TRIANGLES)
 mesh.load_texture("textures/img3.jpg")
 
 right_side_computers = LoadMesh("assets/RightComputers.obj", GL_TRIANGLES)
+
 right_side_keyboards = LoadMesh("assets/RightKeyboards.obj", GL_LINE_LOOP)
 right_side_benches = LoadMesh("assets/RightBenches.obj", GL_TRIANGLES)
 right_side_cabinets = LoadMesh("assets/RightCabinets.obj", GL_TRIANGLES)
@@ -32,7 +33,10 @@ left_side_cabinets = LoadMesh("assets/LeftCabinets.obj", GL_TRIANGLES)
 fans = LoadMesh("assets/Fans.obj", GL_TRIANGLES)
 fans2 = LoadMesh("assets/Fans2.obj", GL_TRIANGLES)
 quadro = LoadMesh("assets/Quadro.obj", GL_TRIANGLES)
+
 door = LoadMesh("assets/Porta.obj", GL_TRIANGLES)
+door.load_texture("textures/DoorTexture.jpg")
+
 window = LoadMesh("assets/Window.obj", GL_TRIANGLES)
 mesaProfessor = LoadMesh("assets/MesaProfessor.obj", GL_TRIANGLES)
 laptop = LoadMesh("assets/Laptop.obj", GL_TRIANGLES)
@@ -192,7 +196,7 @@ def display():
     glPopMatrix()
 
     glPushMatrix()
-    glColor(1, 1, 0)
+    glColor(1, 1, 1)
     glTranslatef(2.68048, 0.345, -5.14363)
 
     if portaAnimacao:
