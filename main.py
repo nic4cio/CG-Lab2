@@ -105,60 +105,6 @@ def init_camera():
     glEnable(GL_DEPTH_TEST)
     camera.update(screen.get_width(), screen.get_height())
 
-
-def draw_cube(x, y, z):
-    glPushMatrix()
-    glTranslatef(x, y, z)
-    glColor(0, 1, 0)
-    glBegin(GL_QUADS)
-
-    # Front face
-    glVertex3f(-0.075, -0.075, 0.075)
-    glVertex3f(0.075, -0.075, 0.075)
-    glVertex3f(0.075, 0.075, 0.075)
-    glVertex3f(-0.075, 0.075, 0.075)
-
-    # Back face
-    glVertex3f(-0.075, -0.075, -0.075)
-    glVertex3f(0.075, -0.075, -0.075)
-    glVertex3f(0.075, 0.075, -0.075)
-    glVertex3f(-0.075, 0.075, -0.075)
-
-    # Top face
-    glVertex3f(-0.075, 0.075, 0.075)
-    glVertex3f(0.075, 0.075, 0.075)
-    glVertex3f(0.075, 0.075, -0.075)
-    glVertex3f(-0.075, 0.075, -0.075)
-
-    # Bottom face
-    glVertex3f(-0.075, -0.075, 0.075)
-    glVertex3f(0.075, -0.075, 0.075)
-    glVertex3f(0.075, -0.075, -0.075)
-    glVertex3f(-0.075, -0.075, -0.075)
-
-    # Right face
-    glVertex3f(0.075, -0.075, 0.075)
-    glVertex3f(0.075, -0.075, -0.075)
-    glVertex3f(0.075, 0.075, -0.075)
-    glVertex3f(0.075, 0.075, 0.075)
-
-    # Left face
-    glVertex3f(-0.075, -0.075, 0.075)
-    glVertex3f(-0.075, -0.075, -0.075)
-    glVertex3f(-0.075, 0.075, -0.075)
-    glVertex3f(-0.075, 0.075, 0.075)
-
-    glEnd()
-    glColor(1, 1, 1)
-    glPopMatrix()
-
-
-def draw_spotlight(pos, direction, cutoff, lightid):
-    glLightfv(lightid, GL_POSITION, (pos))
-    glLightfv(lightid, GL_SPOT_DIRECTION, (direction))
-    glLightf(lightid, GL_SPOT_CUTOFF, cutoff)
-
-
 def draw_world_axes():
     glLineWidth(1)
     glBegin(GL_LINES)
@@ -184,6 +130,7 @@ def display():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     init_camera()
 
+    #define como os modelos vai reagir a ilumincação especular e difusa
     glMaterialfv(GL_FRONT, GL_SPECULAR, (1.0, 1.0, 1.0, 1))
     glMaterialfv(GL_FRONT, GL_DIFFUSE, (1.0, 1.0, 1.0, 1))
 
@@ -195,7 +142,7 @@ def display():
     glLightfv(GL_LIGHT0, GL_POSITION, (1.25, 1.95, -1.15, 0))
 
     # Lado direito / Frente
-    glLightfv(GL_LIGHT1, GL_POSITION, (1.25, 1.90, -1.15, 1))
+    glLightfv(GL_LIGHT1, GL_POSITION, (1.25, 1.90, -1.15, 1)) # como é 1 vai ser direcional
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0, -1, 0))
     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 30)
     glLightfv(GL_LIGHT1, GL_DIFFUSE, (0.3, 0.3, 1.3, 1.0))

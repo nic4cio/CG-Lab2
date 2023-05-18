@@ -84,15 +84,6 @@ class LoadMesh(Mesh):
             glEnable(GL_TEXTURE_2D)
             glBegin(self.draw_type)
 
-            #for u in self.uvs_ind:
-            #    print(self.uvs[self.uvs_ind[u]])
-#
-            #for t in range(0, len(self.triangles), 3):
-            #    glTexCoord2fv(self.uvs[self.uvs_ind[t]])
-            #    glVertex3fv(self.vertices[self.triangles[t]])
-            #    glVertex3fv(self.vertices[self.triangles[t + 1]])
-            #    glVertex3fv(self.vertices[self.triangles[t + 2]])
-
             for face in self.faces:
                 for vertex_index, texture_index in face:
                     vertex = self.vertices[vertex_index]
