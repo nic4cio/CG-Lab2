@@ -20,19 +20,28 @@ mesh = LoadMesh("assets/Lab2.obj", GL_TRIANGLES)
 mesh.load_texture("textures/img3.jpg")
 
 right_side_computers = LoadMesh("assets/RightComputers.obj", GL_TRIANGLES)
+right_side_computers.load_texture("textures/PcsWallpaper.jpg")
+
 
 right_side_keyboards = LoadMesh("assets/RightKeyboards.obj", GL_LINE_LOOP)
 right_side_benches = LoadMesh("assets/RightBenches.obj", GL_TRIANGLES)
 right_side_cabinets = LoadMesh("assets/RightCabinets.obj", GL_TRIANGLES)
 
 left_side_computers = LoadMesh("assets/LeftComputers.obj", GL_TRIANGLES)
+left_side_computers.load_texture("textures/PcsWallpaper.jpg")
+
 left_side_keyboards = LoadMesh("assets/LeftKeyboards.obj", GL_LINE_LOOP)
 left_side_benches = LoadMesh("assets/LeftBenches.obj", GL_TRIANGLES)
 left_side_cabinets = LoadMesh("assets/LeftCabinets.obj", GL_TRIANGLES)
 
 fans = LoadMesh("assets/Fans.obj", GL_TRIANGLES)
+fans.load_texture("textures/madeira.jpg")
+
 fans2 = LoadMesh("assets/Fans2.obj", GL_TRIANGLES)
+fans2.load_texture("textures/madeira.jpg")
+
 quadro = LoadMesh("assets/Quadro.obj", GL_TRIANGLES)
+quadro.load_texture("textures/QuadroTexture.jpg")
 
 door = LoadMesh("assets/Porta.obj", GL_TRIANGLES)
 door.load_texture("textures/DoorTexture.jpg")
@@ -179,7 +188,7 @@ def display():
     quadro.draw()
     mesaProfessor.draw()
 
-    glColor(0.71, 0.494, 0.862)
+    # glColor(0.71, 0.494, 0.862)
     laptop.draw()
     glPopMatrix()
 
