@@ -22,7 +22,6 @@ mesh.load_texture("textures/img3_teste.jpg")
 right_side_computers = LoadMesh("assets/RightComputers.obj", GL_TRIANGLES)
 right_side_computers.load_texture("textures/PcsWallpaper.jpg")
 
-
 right_side_keyboards = LoadMesh("assets/RightKeyboards.obj", GL_LINE_LOOP)
 
 right_side_benches = LoadMesh("assets/RightBenches.obj", GL_TRIANGLES)
@@ -73,6 +72,7 @@ luz3_ativa = True
 luz4_ativa = True
 luz5_ativa = True
 
+
 def initialise():
     glClearColor(background_color[0], background_color[1], background_color[2], background_color[3])
     glColor(drawing_color)
@@ -104,42 +104,43 @@ def init_camera():
     glEnable(GL_DEPTH_TEST)
     camera.update(screen.get_width(), screen.get_height())
 
+
 def draw_cube(x, y, z):
     glPushMatrix()
     glTranslatef(x, y, z)
     glColor(0, 1, 0)
     glBegin(GL_QUADS)
-    
+
     # Front face
     glVertex3f(-0.075, -0.075, 0.075)
     glVertex3f(0.075, -0.075, 0.075)
     glVertex3f(0.075, 0.075, 0.075)
     glVertex3f(-0.075, 0.075, 0.075)
-    
+
     # Back face
     glVertex3f(-0.075, -0.075, -0.075)
     glVertex3f(0.075, -0.075, -0.075)
     glVertex3f(0.075, 0.075, -0.075)
     glVertex3f(-0.075, 0.075, -0.075)
-    
+
     # Top face
     glVertex3f(-0.075, 0.075, 0.075)
     glVertex3f(0.075, 0.075, 0.075)
     glVertex3f(0.075, 0.075, -0.075)
     glVertex3f(-0.075, 0.075, -0.075)
-    
+
     # Bottom face
     glVertex3f(-0.075, -0.075, 0.075)
     glVertex3f(0.075, -0.075, 0.075)
     glVertex3f(0.075, -0.075, -0.075)
     glVertex3f(-0.075, -0.075, -0.075)
-    
+
     # Right face
     glVertex3f(0.075, -0.075, 0.075)
     glVertex3f(0.075, -0.075, -0.075)
     glVertex3f(0.075, 0.075, -0.075)
     glVertex3f(0.075, 0.075, 0.075)
-    
+
     # Left face
     glVertex3f(-0.075, -0.075, 0.075)
     glVertex3f(-0.075, -0.075, -0.075)
@@ -150,10 +151,12 @@ def draw_cube(x, y, z):
     glColor(1, 1, 1)
     glPopMatrix()
 
+
 def draw_spotlight(pos, direction, cutoff, lightid):
     glLightfv(lightid, GL_POSITION, (pos))
     glLightfv(lightid, GL_SPOT_DIRECTION, (direction))
     glLightf(lightid, GL_SPOT_CUTOFF, cutoff)
+
 
 def draw_world_axes():
     glLineWidth(1)
@@ -185,41 +188,41 @@ def display():
 
     ### Iluminação
     # Ambiente
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  (0.5, 0.5, 0.5, 1.0))
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  (0.3, 0.3, 1.3, 1.0))
+    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.5, 0.5, 0.5, 1.0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (0.3, 0.3, 1.3, 1.0))
     glLightfv(GL_LIGHT0, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
     glLightfv(GL_LIGHT0, GL_POSITION, (1.25, 1.95, -1.15, 0))
-    
+
     # Lado direito / Frente
     glLightfv(GL_LIGHT1, GL_POSITION, (1.25, 1.90, -1.15, 1))
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0, -1, 0))
-    glLightf (GL_LIGHT1, GL_SPOT_CUTOFF, 30)
-    glLightfv(GL_LIGHT1, GL_DIFFUSE,  (0.3, 0.3, 1.3, 1.0))
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 30)
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, (0.3, 0.3, 1.3, 1.0))
     glLightfv(GL_LIGHT1, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
-    
+
     # Lado esquerdo
     glLightfv(GL_LIGHT2, GL_POSITION, (-3.0, 1.90, -1.15, 1))
     glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, (0, -1, 0))
-    glLightf (GL_LIGHT2, GL_SPOT_CUTOFF, 30)
-    glLightfv(GL_LIGHT2, GL_DIFFUSE,  (0.3, 1.3, 0.3, 1.0))
+    glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 30)
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, (0.3, 1.3, 0.3, 1.0))
     glLightfv(GL_LIGHT2, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
-    
+
     # Lado direito / Trás
     glLightfv(GL_LIGHT3, GL_POSITION, (1.25, 1.90, 0.35, 1))
     glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, (0, -1, 0))
-    glLightf (GL_LIGHT3, GL_SPOT_CUTOFF, 30)
-    glLightfv(GL_LIGHT3, GL_DIFFUSE,  (0.3, 1.3, 0.3, 1.0))
+    glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, 30)
+    glLightfv(GL_LIGHT3, GL_DIFFUSE, (0.3, 1.3, 0.3, 1.0))
     glLightfv(GL_LIGHT3, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
-    
+
     # Luz projetor
     glLightfv(GL_LIGHT4, GL_POSITION, (-0.75, 0.75, -3, 1))
     glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, (0, 0, -1))
-    glLightf (GL_LIGHT4, GL_SPOT_CUTOFF, 30)
-    glLightfv(GL_LIGHT4, GL_DIFFUSE,  (0.0, 0.0, 0.0, 1.0))
+    glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, 30)
+    glLightfv(GL_LIGHT4, GL_DIFFUSE, (0.0, 0.0, 0.0, 1.0))
     glLightfv(GL_LIGHT4, GL_SPECULAR, (0.7, 0.7, 0.7, 1.0))
 
-    #draw_cube(-0.75, 1, -3)
-    
+    # draw_cube(-0.75, 1, -3)
+
     ### FIM: Iluminação
 
     glPushMatrix()
@@ -239,7 +242,7 @@ def display():
     left_side_cabinets.draw()
     right_side_cabinets.draw()
 
-    #glColor(0.85, 0.85, 0.85)
+    # glColor(0.85, 0.85, 0.85)
     glColor(1, 1, 1)
     # left_side_keyboards.draw()
     # right_side_keyboards.draw()
@@ -252,7 +255,6 @@ def display():
     glColor(0.85, 0.85, 1)
     laptop.draw()
     glPopMatrix()
-
 
     glColor(1, 1, 1)
     glPushMatrix()
@@ -290,10 +292,9 @@ def display():
     door.draw()
     glPopMatrix()
 
-
-    for janelaZ in [ -3.45, -2.3, -1.15, 0 ]:
+    for janelaZ in [-3.45, -2.3, -1.15, 0]:
         glPushMatrix()
-        glColor(204/255, 230/255, 230/255)
+        glColor(204 / 255, 230 / 255, 230 / 255)
         glTranslatef(-4, 1.5, janelaZ)
         if janelasAnimacao:
             # Executa a animação das janelas abrindo, ela vai de 0º a -45º
@@ -306,14 +307,14 @@ def display():
                 rotationJanelas = rotationJanelas + 1
                 if rotationJanelas >= 0:
                     janelasAnimacao = False
-            
+
             glRotatef(rotationJanelas, 0, 0, 1)
         elif janelasAbertas:
             glRotatef(-45, 0, 0, 1)
 
         window.draw()
         glPopMatrix()
-    
+
     rotationFan1 = (rotationFan1 + 2) % 360
     rotationFan2 = (rotationFan2 + 1) % 360
 
