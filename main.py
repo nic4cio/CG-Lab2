@@ -17,14 +17,17 @@ screen = pygame.display.set_mode((screen_width, screen_height), DOUBLEBUF | OPEN
 pygame.display.set_caption('Lab')
 
 mesh = LoadMesh("assets/Lab2.obj", GL_TRIANGLES)
-mesh.load_texture("textures/img3.jpg")
+mesh.load_texture("textures/img3_teste.jpg")
 
 right_side_computers = LoadMesh("assets/RightComputers.obj", GL_TRIANGLES)
 right_side_computers.load_texture("textures/PcsWallpaper.jpg")
 
 
 right_side_keyboards = LoadMesh("assets/RightKeyboards.obj", GL_LINE_LOOP)
+
 right_side_benches = LoadMesh("assets/RightBenches.obj", GL_TRIANGLES)
+right_side_benches.load_texture("textures/mdf.jpg")
+
 right_side_cabinets = LoadMesh("assets/RightCabinets.obj", GL_TRIANGLES)
 
 left_side_computers = LoadMesh("assets/LeftComputers.obj", GL_TRIANGLES)
@@ -32,6 +35,8 @@ left_side_computers.load_texture("textures/PcsWallpaper.jpg")
 
 left_side_keyboards = LoadMesh("assets/LeftKeyboards.obj", GL_LINE_LOOP)
 left_side_benches = LoadMesh("assets/LeftBenches.obj", GL_TRIANGLES)
+left_side_benches.load_texture("textures/mdf.jpg")
+
 left_side_cabinets = LoadMesh("assets/LeftCabinets.obj", GL_TRIANGLES)
 
 fans = LoadMesh("assets/Fans.obj", GL_TRIANGLES)
@@ -62,6 +67,10 @@ rotationJanelas = 0
 rotationFan1 = 0
 rotationFan2 = 0
 
+luz1_ativa = True
+luz2_ativa = True
+luz3_ativa = True
+
 def initialise():
     glClearColor(background_color[0], background_color[1], background_color[2], background_color[3])
     glColor(drawing_color)
@@ -72,9 +81,17 @@ def initialise():
     gluPerspective(60, (screen_width / screen_height), 0.1, 1000.0)
 
     glShadeModel(GL_SMOOTH)
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
 
+    glEnable(GL_LIGHTING)
     glEnable(GL_COLOR_MATERIAL)
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+    glEnable(GL_LIGHT0)
+    glEnable(GL_LIGHT1)
+    glEnable(GL_LIGHT2)
+    glEnable(GL_LIGHT3)
+    glEnable(GL_LIGHT4)
+
+    glEnable(GL_NORMALIZE)
 
 
 def init_camera():
@@ -85,30 +102,56 @@ def init_camera():
     glEnable(GL_DEPTH_TEST)
     camera.update(screen.get_width(), screen.get_height())
 
-## class Material >:(
+def draw_cube(x, y, z):
+    glPushMatrix()
+    glTranslatef(x, y, z)
+    glColor(0, 1, 0)
+    glBegin(GL_QUADS)
+    
+    # Front face
+    glVertex3f(-0.075, -0.075, 0.075)
+    glVertex3f(0.075, -0.075, 0.075)
+    glVertex3f(0.075, 0.075, 0.075)
+    glVertex3f(-0.075, 0.075, 0.075)
+    
+    # Back face
+    glVertex3f(-0.075, -0.075, -0.075)
+    glVertex3f(0.075, -0.075, -0.075)
+    glVertex3f(0.075, 0.075, -0.075)
+    glVertex3f(-0.075, 0.075, -0.075)
+    
+    # Top face
+    glVertex3f(-0.075, 0.075, 0.075)
+    glVertex3f(0.075, 0.075, 0.075)
+    glVertex3f(0.075, 0.075, -0.075)
+    glVertex3f(-0.075, 0.075, -0.075)
+    
+    # Bottom face
+    glVertex3f(-0.075, -0.075, 0.075)
+    glVertex3f(0.075, -0.075, 0.075)
+    glVertex3f(0.075, -0.075, -0.075)
+    glVertex3f(-0.075, -0.075, -0.075)
+    
+    # Right face
+    glVertex3f(0.075, -0.075, 0.075)
+    glVertex3f(0.075, -0.075, -0.075)
+    glVertex3f(0.075, 0.075, -0.075)
+    glVertex3f(0.075, 0.075, 0.075)
+    
+    # Left face
+    glVertex3f(-0.075, -0.075, 0.075)
+    glVertex3f(-0.075, -0.075, -0.075)
+    glVertex3f(-0.075, 0.075, -0.075)
+    glVertex3f(-0.075, 0.075, 0.075)
 
-class Material:
-    def __init__(self, filepath):
-        self.texture = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, self.texture)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_REPEAT)
-        image = pygame.image.load(filepath).convert()
-        image_width, image_height = image.get_rect().size
-        image_data = pygame.image.tostring(image, "RGBA")
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data)
-        glGenerateMipmap(GL_TEXTURE_2D)
+    glEnd()
+    glColor(1, 1, 1)
+    glPopMatrix()
 
-    def use(self):
-        glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, self.texture)
-
-    def destroy(self):
-        glDeleteTextures(1, (self.texture,))
-
-#######
+def draw_spotlight(pos, direction, cutoff, lightid):
+    glLightfv(lightid, GL_POSITION, (pos))
+    glLightfv(lightid, GL_SPOT_DIRECTION, (direction))
+    glLightf(lightid, GL_SPOT_CUTOFF, cutoff)
 
 def draw_world_axes():
     glLineWidth(1)
@@ -127,37 +170,55 @@ def draw_world_axes():
     glColor(1, 1, 1)
 
 
-
 def display():
     global rotationFan1, rotationFan2
     global rotationPorta, portaAnimacao
     global rotationJanelas, janelasAnimacao
 
-    glEnable(GL_LIGHTING)
-    glEnable(GL_LIGHT0)
-    glEnable(GL_LIGHT1)
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     init_camera()
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  (0.1, 0.1, 0.1, 1.0))
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  (0.3, 0.3, 0.3, 1.0))
+    glMaterialfv(GL_FRONT, GL_SPECULAR, (1.0, 1.0, 1.0, 1))
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, (1.0, 1.0, 1.0, 1))
+
+    ### Iluminação
+    # Ambiente
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  (0.5, 0.5, 0.5, 1.0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  (0.3, 0.3, 1.3, 1.0))
     glLightfv(GL_LIGHT0, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
-    glLightfv(GL_LIGHT0, GL_POSITION, (1.6, 1.5, 1.0, 2.0))
-
-    glLightfv(GL_LIGHT1, GL_AMBIENT,  (0.1, 0.1, 0.1, 1.0))
-    glLightfv(GL_LIGHT1, GL_DIFFUSE,  (0.3, 0.3, 0.3, 1.0))
-    glLightfv(GL_LIGHT1, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
-    glLightfv(GL_LIGHT1, GL_POSITION, (-1.6, 1.5, 2.0, 1.0))
-
-    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 0.25)) #amb1
-    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 1)) #dif2
-
-    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 0.25)) #amb1
-    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 1)) #dif3
+    glLightfv(GL_LIGHT0, GL_POSITION, (1.25, 1.95, -1.15, 0))
     
-    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 0.25)) #amb1
-    #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 1)) #dif4
+    # Lado direito / Frente
+    glLightfv(GL_LIGHT1, GL_POSITION, (1.25, 1.90, -1.15, 1))
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0, -1, 0))
+    glLightf (GL_LIGHT1, GL_SPOT_CUTOFF, 30)
+    glLightfv(GL_LIGHT1, GL_DIFFUSE,  (0.3, 0.3, 1.3, 1.0))
+    glLightfv(GL_LIGHT1, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
+    
+    # Lado esquerdo
+    glLightfv(GL_LIGHT2, GL_POSITION, (-3.0, 1.90, -1.15, 1))
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, (0, -1, 0))
+    glLightf (GL_LIGHT2, GL_SPOT_CUTOFF, 30)
+    glLightfv(GL_LIGHT2, GL_DIFFUSE,  (0.3, 1.3, 0.3, 1.0))
+    glLightfv(GL_LIGHT2, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
+    
+    # Lado direito / Trás
+    glLightfv(GL_LIGHT3, GL_POSITION, (1.25, 1.90, 0.35, 1))
+    glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, (0, -1, 0))
+    glLightf (GL_LIGHT3, GL_SPOT_CUTOFF, 30)
+    glLightfv(GL_LIGHT3, GL_DIFFUSE,  (0.3, 1.3, 0.3, 1.0))
+    glLightfv(GL_LIGHT3, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
+    
+    # Luz projetor
+    glLightfv(GL_LIGHT4, GL_POSITION, (-0.75, 0.75, -3, 1))
+    glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, (0, 0, -1))
+    glLightf (GL_LIGHT4, GL_SPOT_CUTOFF, 30)
+    glLightfv(GL_LIGHT4, GL_DIFFUSE,  (0.0, 0.0, 0.0, 1.0))
+    glLightfv(GL_LIGHT4, GL_SPECULAR, (0.7, 0.7, 0.7, 1.0))
+
+    #draw_cube(-0.75, 1, -3)
+    
+    ### FIM: Iluminação
 
     glPushMatrix()
     draw_world_axes()
@@ -165,13 +226,10 @@ def display():
 
     glPushMatrix()
 
-    #glEnable(GL_TEXTURE_2D)
     mesh.draw()
-    #glDisable(GL_TEXTURE_2D)
 
-    glColor(0.4, 0.4, 0.4)
+    glColor(1.0, 1.0, 1.0)
     # Define a reflectancia do material
-    glMaterialfv(GL_FRONT,GL_SPECULAR, (1.0, 1.0, 1.0, 1))
     left_side_computers.draw()
     right_side_computers.draw()
 
@@ -179,7 +237,8 @@ def display():
     left_side_cabinets.draw()
     right_side_cabinets.draw()
 
-    glColor(0.85, 0.85, 0.85)
+    #glColor(0.85, 0.85, 0.85)
+    glColor(1, 1, 1)
     # left_side_keyboards.draw()
     # right_side_keyboards.draw()
     right_side_benches.draw()
@@ -188,10 +247,12 @@ def display():
     quadro.draw()
     mesaProfessor.draw()
 
-    # glColor(0.71, 0.494, 0.862)
+    glColor(0.85, 0.85, 1)
     laptop.draw()
     glPopMatrix()
 
+
+    glColor(1, 1, 1)
     glPushMatrix()
     glTranslatef(0, 1.75, 0)
     glRotatef(rotationFan1, 0, 1, 0)
@@ -267,15 +328,32 @@ while not done:
             if event.key == K_ESCAPE:
                 pygame.mouse.set_visible(True)
                 pygame.event.set_grab(False)
+
             elif event.key == K_SPACE:
                 pygame.mouse.set_visible(False)
                 pygame.event.set_grab(True)
+
             elif event.key == K_p:
                 portaAberta = not portaAberta
                 portaAnimacao = True
+
             elif event.key == K_j:
                 janelasAbertas = not janelasAbertas
+
                 janelasAnimacao = True
+            elif event.key == K_1:
+                if luz1_ativa:
+                    glDisable(GL_LIGHT0)
+                else:
+                    glEnable(GL_LIGHT0)
+                luz1_ativa = not luz1_ativa
+
+            elif event.key == K_2:
+                if luz2_ativa:
+                    glDisable(GL_LIGHT1)
+                else:
+                    glEnable(GL_LIGHT1)
+                luz2_ativa = not luz2_ativa
 
     display()
     pygame.display.flip()
