@@ -175,7 +175,7 @@ def display():
     left_side_computers.draw()
     right_side_computers.draw()
 
-    glColor(0.4, 0.4, 0.4)
+    glColor(0.1, 0.1, 0.1)
     left_side_cabinets.draw()
     right_side_cabinets.draw()
 
@@ -230,7 +230,7 @@ def display():
 
     for janelaZ in [ -3.45, -2.3, -1.15, 0 ]:
         glPushMatrix()
-        glColor(.2, .5, .66)
+        glColor(204/255, 230/255, 230/255)
         glTranslatef(-4, 1.5, janelaZ)
         if janelasAnimacao:
             # Executa a animação das janelas abrindo, ela vai de 0º a -45º
