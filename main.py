@@ -72,6 +72,7 @@ luz3_ativa = True
 luz4_ativa = True
 luz5_ativa = True
 
+modo_noturno = False
 
 def initialise():
     glClearColor(background_color[0], background_color[1], background_color[2], background_color[3])
@@ -294,7 +295,10 @@ def display():
 
     for janelaZ in [-3.45, -2.3, -1.15, 0]:
         glPushMatrix()
-        glColor(204 / 255, 230 / 255, 230 / 255)
+        if modo_noturno:
+            glColor(0.3, 0.3, 0.3)
+        else:
+            glColor(204/255, 230/255, 230/255)
         glTranslatef(-4, 1.5, janelaZ)
         if janelasAnimacao:
             # Executa a animação das janelas abrindo, ela vai de 0º a -45º
@@ -342,8 +346,15 @@ while not done:
 
             elif event.key == K_j:
                 janelasAbertas = not janelasAbertas
-
                 janelasAnimacao = True
+
+            elif event.key == K_n:
+                modo_noturno = not modo_noturno
+                if modo_noturno:
+                    glDisable(GL_LIGHT0)
+                else:
+                    glEnable(GL_LIGHT0)
+
             elif event.key == K_1:
                 if luz1_ativa:
                     glDisable(GL_LIGHT0)
