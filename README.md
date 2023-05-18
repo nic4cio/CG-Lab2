@@ -33,3 +33,5 @@ Para rodar, utilize o seguinte comando no terminal:
 > `Right` - move a câmera para a direita
 >
 > `Down` - move a câmera para trás
+>
+> Teclas `1` a `5` - Liga/desliga as luzes

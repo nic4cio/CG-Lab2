@@ -70,6 +70,8 @@ rotationFan2 = 0
 luz1_ativa = True
 luz2_ativa = True
 luz3_ativa = True
+luz4_ativa = True
+luz5_ativa = True
 
 def initialise():
     glClearColor(background_color[0], background_color[1], background_color[2], background_color[3])
@@ -354,6 +356,27 @@ while not done:
                 else:
                     glEnable(GL_LIGHT1)
                 luz2_ativa = not luz2_ativa
+
+            elif event.key == K_3:
+                if luz3_ativa:
+                    glDisable(GL_LIGHT2)
+                else:
+                    glEnable(GL_LIGHT2)
+                luz3_ativa = not luz3_ativa
+
+            elif event.key == K_4:
+                if luz4_ativa:
+                    glDisable(GL_LIGHT3)
+                else:
+                    glEnable(GL_LIGHT3)
+                luz4_ativa = not luz4_ativa
+
+            elif event.key == K_5:
+                if luz5_ativa:
+                    glDisable(GL_LIGHT4)
+                else:
+                    glEnable(GL_LIGHT4)
+                luz5_ativa = not luz5_ativa
 
     display()
     pygame.display.flip()
