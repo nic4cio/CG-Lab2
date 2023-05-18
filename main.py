@@ -17,7 +17,7 @@ screen = pygame.display.set_mode((screen_width, screen_height), DOUBLEBUF | OPEN
 pygame.display.set_caption('Lab')
 
 mesh = LoadMesh("assets/Lab2.obj", GL_TRIANGLES)
-mesh.load_texture("img1.jpg")
+mesh.load_texture("textures/img3.jpg")
 
 right_side_computers = LoadMesh("assets/RightComputers.obj", GL_TRIANGLES)
 right_side_keyboards = LoadMesh("assets/RightKeyboards.obj", GL_LINE_LOOP)
