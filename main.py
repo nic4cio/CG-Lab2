@@ -15,7 +15,10 @@ drawing_color = (1, 1, 1, 1)
 
 screen = pygame.display.set_mode((screen_width, screen_height), DOUBLEBUF | OPENGL)
 pygame.display.set_caption('Lab')
+
 mesh = LoadMesh("assets/Lab2.obj", GL_TRIANGLES)
+mesh.load_texture("img1.jpg")
+
 right_side_computers = LoadMesh("assets/RightComputers.obj", GL_TRIANGLES)
 right_side_keyboards = LoadMesh("assets/RightKeyboards.obj", GL_LINE_LOOP)
 right_side_benches = LoadMesh("assets/RightBenches.obj", GL_TRIANGLES)
@@ -46,7 +49,6 @@ rotationJanelas = 0
 rotationFan1 = 0
 rotationFan2 = 0
 
-
 def initialise():
     glClearColor(background_color[0], background_color[1], background_color[2], background_color[3])
     glColor(drawing_color)
@@ -55,6 +57,12 @@ def initialise():
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(60, (screen_width / screen_height), 0.1, 1000.0)
+
+    glShadeModel(GL_SMOOTH)
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+
+    glEnable(GL_COLOR_MATERIAL)
+
 
 def init_camera():
     # modelview
@@ -115,7 +123,6 @@ def display():
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
     glEnable(GL_LIGHT1)
-    glEnable(GL_COLOR_MATERIAL)
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     init_camera()
@@ -144,7 +151,10 @@ def display():
     glPopMatrix()
 
     glPushMatrix()
+
+    #glEnable(GL_TEXTURE_2D)
     mesh.draw()
+    #glDisable(GL_TEXTURE_2D)
 
     glColor(0.4, 0.4, 0.4)
     # Define a reflectancia do material
