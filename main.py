@@ -134,8 +134,12 @@ def display():
     glMaterialfv(GL_FRONT, GL_SPECULAR, (1.0, 1.0, 1.0, 1))
     glMaterialfv(GL_FRONT, GL_DIFFUSE, (1.0, 1.0, 1.0, 1))
 
+    # difusa - raios se espalham em diferentes direções
+    # especular -depende da posição do observador e do ângulo
+
     ### Iluminação
     # Ambiente
+
     glLightfv(GL_LIGHT0, GL_AMBIENT, (0.5, 0.5, 0.5, 1.0))
     glLightfv(GL_LIGHT0, GL_DIFFUSE, (0.3, 0.3, 1.3, 1.0))
     glLightfv(GL_LIGHT0, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
